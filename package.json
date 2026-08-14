@@ -1,0 +1,15 @@
+{
+  "name": "job-star",
+  "version": "1.0.0",
+  "description": "행정업무 자동화 및 상담 지원 웹 애플리케이션",
+  "main": "local-server.js",
+  "scripts": {
+    "start": "node local-server.js",
+    "dev": "node local-server.js"
+  },
+  "private": true,
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
