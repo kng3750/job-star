@@ -4,13 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Star — 행정·상담 지원</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <div class="page-bg" aria-hidden="true"></div>
@@ -23,10 +17,10 @@
           <p>행정업무 자동화 · 상담 지원</p>
         </div>
       </div>
-      <div class="header-right">
-        <div class="api-status" id="api-status" title="API 키 감지 상태">
+      <div class="header-right"><nav class="account-nav" aria-label="계정"><span id="session-name"></span><a href="/admin" id="central-admin" hidden>통합 계정 관리</a><a href="/password">비밀번호 변경</a><button type="button" class="btn-ghost" id="logout">통합 로그아웃</button></nav>
+        <div class="api-status" id="api-status" title="중앙 로그인 상태">
           <span class="api-status-dot" id="api-status-dot"></span>
-          <span id="api-status-text">API 키 감지 중…</span>
+          <span id="api-status-text">중앙 로그인 확인 중…</span>
         </div>
         <p class="header-note">상담사·행정 실무자를 위한 문서 생성 도구</p>
       </div>
@@ -71,23 +65,23 @@
           <form class="feature-form is-active" id="form-counselingLog" data-feature="counselingLog">
             <label>
               <span>참여자 정보 <em>(나이, 성별, 경력 등)</em></span>
-              <textarea name="participantInfo" rows="2" placeholder="예: 52세 여성, 경리·총무 경력 12년, 육아로 5년 공백" required></textarea>
+              <textarea maxlength="6000" name="participantInfo" rows="2" placeholder="예: 52세 여성, 경리·총무 경력 12년, 육아로 5년 공백" required></textarea>
             </label>
             <label>
               <span>상담 일시 및 방법</span>
-              <input type="text" name="sessionInfo" placeholder="예: 2026.07.27 14:00 / 대면 상담" required />
+              <input maxlength="1000" type="text" name="sessionInfo" placeholder="예: 2026.07.27 14:00 / 대면 상담" required />
             </label>
             <label>
               <span>주요 논의 내용</span>
-              <textarea name="discussion" rows="4" placeholder="오늘 상담에서 다룬 핵심 내용을 적어 주세요." required></textarea>
+              <textarea maxlength="6000" name="discussion" rows="4" placeholder="오늘 상담에서 다룬 핵심 내용을 적어 주세요." required></textarea>
             </label>
             <label>
               <span>합의 사항</span>
-              <textarea name="agreements" rows="3" placeholder="내담자와 합의한 실행 계획을 적어 주세요." required></textarea>
+              <textarea maxlength="6000" name="agreements" rows="3" placeholder="내담자와 합의한 실행 계획을 적어 주세요." required></textarea>
             </label>
             <label>
               <span>다음 상담 일정</span>
-              <input type="text" name="nextSession" placeholder="예: 2026.08.03 14:00 / 이력서 피드백" required />
+              <input maxlength="1000" type="text" name="nextSession" placeholder="예: 2026.08.03 14:00 / 이력서 피드백" required />
             </label>
             <button type="submit" class="btn-generate">상담일지 생성</button>
           </form>
@@ -96,15 +90,15 @@
           <form class="feature-form" id="form-interviewQA" data-feature="interviewQA" hidden>
             <label>
               <span>참여자 정보 <em>(나이, 성별, 경력 공백)</em></span>
-              <textarea name="participantInfo" rows="3" placeholder="예: 48세 여성, 영업관리 8년, 경력 공백 7년" required></textarea>
+              <textarea maxlength="6000" name="participantInfo" rows="3" placeholder="예: 48세 여성, 영업관리 8년, 경력 공백 7년" required></textarea>
             </label>
             <label>
               <span>지원 회사</span>
-              <input type="text" name="company" placeholder="예: ○○물류(중견기업)" required />
+              <input maxlength="1000" type="text" name="company" placeholder="예: ○○물류(중견기업)" required />
             </label>
             <label>
               <span>지원 직무</span>
-              <input type="text" name="job" placeholder="예: 고객지원·CS 관리" required />
+              <input maxlength="1000" type="text" name="job" placeholder="예: 고객지원·CS 관리" required />
             </label>
             <button type="submit" class="btn-generate">면접 대비 자료 생성</button>
           </form>
@@ -113,11 +107,11 @@
           <form class="feature-form" id="form-interviewFeedback" data-feature="interviewFeedback" hidden>
             <label>
               <span>면접 질문</span>
-              <textarea name="question" rows="2" placeholder="예: 경력 공백 기간 동안 무엇을 하셨나요?" required></textarea>
+              <textarea maxlength="6000" name="question" rows="2" placeholder="예: 경력 공백 기간 동안 무엇을 하셨나요?" required></textarea>
             </label>
             <label>
               <span>내담자의 실제 답변</span>
-              <textarea name="answer" rows="6" placeholder="내담자가 실제로 답변한 내용을 그대로 입력해 주세요." required></textarea>
+              <textarea maxlength="6000" name="answer" rows="6" placeholder="내담자가 실제로 답변한 내용을 그대로 입력해 주세요." required></textarea>
             </label>
             <button type="submit" class="btn-generate">피드백 생성</button>
           </form>
@@ -126,7 +120,7 @@
           <form class="feature-form" id="form-followUpPlan" data-feature="followUpPlan" hidden>
             <label>
               <span>내담자 정보 <em>(나이, 직무, 취업 기업 규모)</em></span>
-              <textarea name="participantInfo" rows="4" placeholder="예: 55세, 사무보조, 중소 제조업체(직원 80명), 주 5일 출근" required></textarea>
+              <textarea maxlength="6000" name="participantInfo" rows="4" placeholder="예: 55세, 사무보조, 중소 제조업체(직원 80명), 주 5일 출근" required></textarea>
             </label>
             <button type="submit" class="btn-generate">사후관리 계획 생성</button>
           </form>
@@ -135,23 +129,23 @@
           <form class="feature-form" id="form-caseClosure" data-feature="caseClosure" hidden>
             <label>
               <span>참여 기간</span>
-              <input type="text" name="period" placeholder="예: 2026.01.15 ~ 2026.06.30" required />
+              <input maxlength="1000" type="text" name="period" placeholder="예: 2026.01.15 ~ 2026.06.30" required />
             </label>
             <label>
               <span>상담 회기</span>
-              <input type="text" name="sessions" placeholder="예: 총 12회 (대면 8 / 전화 4)" required />
+              <input maxlength="1000" type="text" name="sessions" placeholder="예: 총 12회 (대면 8 / 전화 4)" required />
             </label>
             <label>
               <span>취업 결과 <em>(직무, 급여, 지역)</em></span>
-              <textarea name="employmentResult" rows="2" placeholder="예: 총무 보조, 월 230만 원, 인천 남동구" required></textarea>
+              <textarea maxlength="6000" name="employmentResult" rows="2" placeholder="예: 총무 보조, 월 230만 원, 인천 남동구" required></textarea>
             </label>
             <label>
               <span>주요 개입 내용</span>
-              <textarea name="interventions" rows="4" placeholder="이력서 컨설팅, 모의면접, 직무 전환 상담 등" required></textarea>
+              <textarea maxlength="6000" name="interventions" rows="4" placeholder="이력서 컨설팅, 모의면접, 직무 전환 상담 등" required></textarea>
             </label>
             <label>
               <span>기타 참고 사항 <em>(선택)</em></span>
-              <textarea name="notes" rows="2" placeholder="추가로 반영할 내용이 있으면 적어 주세요."></textarea>
+              <textarea maxlength="6000" name="notes" rows="2" placeholder="추가로 반영할 내용이 있으면 적어 주세요."></textarea>
             </label>
             <button type="submit" class="btn-generate">종결 보고서 생성</button>
           </form>
@@ -160,11 +154,11 @@
           <form class="feature-form" id="form-strategyPivot" data-feature="strategyPivot" hidden>
             <label>
               <span>참여 기간</span>
-              <input type="text" name="period" placeholder="예: 2026.03 ~ 현재 (약 4개월)" required />
+              <input maxlength="1000" type="text" name="period" placeholder="예: 2026.03 ~ 현재 (약 4개월)" required />
             </label>
             <label>
               <span>구직활동 이력</span>
-              <textarea name="jobSearchHistory" rows="4" placeholder="지원 건수, 서류 통과율, 면접 경험 등을 적어 주세요." required></textarea>
+              <textarea maxlength="6000" name="jobSearchHistory" rows="4" placeholder="지원 건수, 서류 통과율, 면접 경험 등을 적어 주세요." required></textarea>
             </label>
             <label>
               <span>주요 탈락 단계</span>
@@ -178,7 +172,7 @@
             </label>
             <label>
               <span>기타 참고 사항 <em>(선택)</em></span>
-              <textarea name="notes" rows="2" placeholder="희망 직무, 제약 조건 등"></textarea>
+              <textarea maxlength="6000" name="notes" rows="2" placeholder="희망 직무, 제약 조건 등"></textarea>
             </label>
             <button type="submit" class="btn-generate">전략 전환안 생성</button>
           </form>
@@ -202,11 +196,10 @@
 
     <footer class="site-footer">
       <p>
-        Gemini API 키는 서버 환경변수에서만 사용되며 브라우저로 전송되지 않습니다.
+        생성된 문서는 내용을 확인한 후 업무에 활용해 주세요.
       </p>
     </footer>
 
-    <script src="prompts.js"></script>
-    <script src="script.js"></script>
+    <script src="/assets/app.js"></script>
   </body>
 </html>

@@ -1,8 +1,18 @@
 {
   "version": 2,
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "framework": null,
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "{server,private,public}/**",
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index"
+    }
   ]
 }

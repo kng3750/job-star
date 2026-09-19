@@ -8,3 +8,8 @@ env/
 Thumbs.db
 .vercel/
 coverage/
+
+work/
+
+.vercel
+.env*

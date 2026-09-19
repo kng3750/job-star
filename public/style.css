@@ -495,3 +495,6 @@ textarea {
     min-height: 4rem;
   }
 }
+
+.account-nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px}.account-nav a{color:inherit}.account-nav span{font-weight:700}[hidden]{display:none!important}
+@media(max-width:700px){.site-header{align-items:flex-start;gap:20px;flex-wrap:wrap}.header-right{max-width:100%}.account-nav{gap:10px}.account-nav .btn-ghost{padding:8px}}

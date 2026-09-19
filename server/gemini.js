@@ -1,4 +1,3 @@
-const https = require('https');
 const { FEATURE_PROMPTS } = require('../prompts');
 
 const MAX_INPUT_LENGTH = 30000;
@@ -20,7 +19,7 @@ async function generateFeature(feature, input) {
     error.statusCode = 503;
     throw error;
   }
-  if (!feature || !FEATURE_PROMPTS[feature]) {
+  if (!feature || !Object.hasOwn(FEATURE_PROMPTS,feature)) {
     const error = new Error('지원하지 않는 기능입니다.');
     error.statusCode = 400;
     throw error;
@@ -29,6 +28,12 @@ async function generateFeature(feature, input) {
     const error = new Error('입력 데이터가 올바르지 않습니다.');
     error.statusCode = 400;
     throw error;
+  }
+
+
+  const allowed = {"counselingLog":["participantInfo","sessionInfo","discussion","agreements","nextSession"],"interviewQA":["participantInfo","company","job"],"interviewFeedback":["question","answer"],"followUpPlan":["participantInfo"],"caseClosure":["period","sessions","employmentResult","interventions","notes"],"strategyPivot":["period","jobSearchHistory","failStage","notes"]};
+  if (Object.entries(input).some(([k,v])=>!allowed[feature].includes(k)||typeof v!=='string'||v.length>6000)||!Object.values(input).some(v=>v.trim())) {
+    throw Object.assign(new Error('입력 항목과 길이를 확인해 주세요.'),{statusCode:400});
   }
 
   const prompt = FEATURE_PROMPTS[feature].build(input);
@@ -46,34 +51,13 @@ async function generateFeature(feature, input) {
   return { feature, title: FEATURE_PROMPTS[feature].title, result: text };
 }
 
-function callGeminiREST(model, apiKey, prompt) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
-    });
-    const request = https.request({
-      hostname: 'generativelanguage.googleapis.com',
-      port: 443,
-      path: `/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
-    }, (response) => {
-      let raw = '';
-      response.on('data', (chunk) => { raw += chunk; });
-      response.on('end', () => {
-        let data = {};
-        try { data = JSON.parse(raw); } catch { return reject(new Error('Gemini 응답 JSON 파싱 오류')); }
-        if (response.statusCode < 200 || response.statusCode >= 300) {
-          return reject(new Error('Gemini API 요청에 실패했습니다.'));
-        }
-        resolve(data);
-      });
-    });
-    request.on('error', reject);
-    request.write(body);
-    request.end();
+async function callGeminiREST(model,apiKey,prompt) {
+  const response=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{
+    method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},
+    body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:4096}}),
+    signal:AbortSignal.timeout(45000)
   });
+  if(!response.ok){await response.body?.cancel();throw Object.assign(new Error('생성 API 호출 실패'),{statusCode:502});}
+  return response.json();
 }
-
-module.exports = { getGeminiApiKey, getGeminiModel, generateFeature };
+module.exports={getGeminiApiKey,getGeminiModel,generateFeature};
