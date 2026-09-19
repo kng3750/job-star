@@ -57,7 +57,8 @@ async function callGeminiREST(model,apiKey,prompt) {
     body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:4096}}),
     signal:AbortSignal.timeout(45000)
   });
-  if(!response.ok){await response.body?.cancel();throw Object.assign(new Error('생성 API 호출 실패'),{statusCode:502});}
+  if(!response.ok){console.error('Gemini upstream HTTP status:',response.status);await response.body?.cancel();throw Object.assign(new Error('생성 API 호출 실패'),{statusCode:502});}
   return response.json();
 }
 module.exports={getGeminiApiKey,getGeminiModel,generateFeature};
+

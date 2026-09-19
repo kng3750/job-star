@@ -41,7 +41,7 @@ function createApp({config,fetchImpl,generator=generateFeature}={}){
   if(res.headersSent)return next(err);
   const status=err.type==='entity.parse.failed'?400:err.type==='entity.too.large'?413:err.status||err.statusCode||503;
   if(status>=500)console.error('Job Star request failed:',err.code||err.name);
-  const message=status>=500?(req.path==='/api/generate'?'호출 실패: 질문 생성 서버에 연결하지 못했습니다. 다시 시도해 주세요.':'인증 서버 연결 실패 또는 설정 오류입니다. 잠시 후 다시 시도해 주세요.'):err.message;
+  const message=status>=500?(req.path==='/api/generate'?'문서 생성 API 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.':'인증 서버 연결 실패 또는 설정 오류입니다. 잠시 후 다시 시도해 주세요.'):err.message;
   res.status(status).json({error:message});
  });
  return app;

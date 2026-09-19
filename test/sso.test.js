@@ -91,7 +91,7 @@ test('all six generated workflows require current session and CSRF; upstream err
  }
  assert.equal((await request(star).post('/api/generate').set('Origin',cfg.origin).set('Cookie',cookie).send({})).status,403);
  const fail=await request(star).post('/api/generate').set('Origin',cfg.origin).set('Cookie',cookie).set('X-CSRF-Token',details.csrfToken).send({feature:'counselingLog',input:{fail:true}});
- assert.equal(fail.status,502);assert.equal(fail.body.result,undefined);assert.match(fail.body.error,/호출 실패/);
+ assert.equal(fail.status,502);assert.equal(fail.body.result,undefined);assert.match(fail.body.error,/문서 생성 API/);
 });
 test('redirect substitution, missing PKCE, wrong state and absent client auth are blocked',async()=>{
  const c=await codeRequest();c.q.set('redirect_uri','https://evil.example/callback');
