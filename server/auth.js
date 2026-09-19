@@ -21,7 +21,7 @@ function createAuth({config,fetchImpl=fetch}={}){
   res.append('Set-Cookie',name+'='+value+'; Path=/; HttpOnly; SameSite='+sameSite+'; Max-Age='+seconds+(production?'; Secure':''));
  }
  const getToken=req=>cookie(req,names(cfg()).session);
- const clear=(res)=>{const c=cfg();setCookie(res,names(c).session,'',0,'Strict',c.production);};
+ const clear=(res)=>{const c=cfg();setCookie(res,names(c).session,'',0,'Lax',c.production);};
  async function backchannel(path,body){
   const c=cfg();let response;
   try{response=await fetchImpl(c.authOrigin+path,{method:'POST',headers:{
@@ -64,7 +64,9 @@ function createAuth({config,fetchImpl=fetch}={}){
   if(!/^[A-Za-z0-9_-]{43}$/.test(tokens.access_token))throw failure(503,'잘못된 세션 응답입니다.');
   const me=await backchannel('/oauth/introspect',{token:tokens.access_token});
   if(me.active!==true||me.aud!==c.clientId)throw failure(401,'로그인 승인을 확인할 수 없습니다.');
-  setCookie(res,names(c).session,tokens.access_token,Math.max(0,Math.min(28800,me.exp-Math.floor(Date.now()/1000))),'Strict',c.production);
+  // Cross-site OAuth callback redirects must carry this cookie to /app.
+  // Mutating requests still require exact Origin and a session-bound CSRF token.
+  setCookie(res,names(c).session,tokens.access_token,Math.max(0,Math.min(28800,me.exp-Math.floor(Date.now()/1000))),'Lax',c.production);
   res.redirect('/app');
  }
  async function authenticate(req,res,next){
@@ -88,3 +90,4 @@ function createAuth({config,fetchImpl=fetch}={}){
  return {start,callback,authenticate,logout,config:cfg,csrf:token=>digest('jobstar-csrf:'+token)};
 }
 module.exports={createAuth,readConfig};
+
